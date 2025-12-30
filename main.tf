@@ -200,7 +200,7 @@ locals {
 
 module "ecs_cluster" {
   source  = "terraform-aws-modules/ecs/aws//modules/cluster"
-  version = "6.0.0"
+  version = "5.12.1"
 
   create = var.create && var.create_cluster
 
