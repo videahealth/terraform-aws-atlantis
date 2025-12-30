@@ -372,7 +372,21 @@ module "ecs_service" {
     cpu_architecture        = "X86_64"
   })
   skip_destroy = try(var.service.skip_destroy, null)
-  volume = lookup(var.service, "volume", {})
+  volume = { for k, v in merge(
+    {
+      efs = {
+        efs_volume_configuration = {
+          file_system_id     = module.efs.id
+          transit_encryption = "ENABLED"
+          authorization_config = {
+            access_point_id = try(module.efs.access_points["atlantis"].id, null)
+            iam             = "ENABLED"
+          }
+        }
+      }
+    },
+    lookup(var.service, "volume", {})
+  ) : k => v if var.enable_efs }
   task_tags = try(var.service.task_tags, {})
 
   # Task execution IAM role
