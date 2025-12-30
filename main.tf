@@ -199,7 +199,7 @@ locals {
 }
 
 module "ecs_cluster" {
-  source  = "git::https://github.com/videahealth/terraform-aws-atlantis.git/?ref=master"
+  source  = "terraform-aws-modules/ecs/aws//modules/cluster"
 
   create = var.create && var.create_cluster
 
